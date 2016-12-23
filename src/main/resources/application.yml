@@ -1,0 +1,46 @@
+server:
+  port: 8010
+  context-path: "/api/v1/demo/user"
+
+# application properties
+app:
+  datasource:
+    name: spring_boot_demo
+    host: 127.0.0.1:3306
+    username: root
+    password: hQAbv7RO9J2QtDmwSBeH8Iq8zlQQDde0FCW8Am3TdQ+tUkoiB07+Jioa6Rl46NTTeW7/dx1n0LRnlxRWTpwg+g==
+    druid:
+      decypt: true
+      public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJDl+qX89W37/pWIFV9iuiqBvsGQH4aptOZHEKol8E7B1zPA5CkzVlQ2D6xfJ1cUMJH14kcnY3wV1RDJDbTO+XUCAwEAAQ==
+
+spring:
+  datasource:
+    name: ${app.datasource.name}
+    url: jdbc:mysql://${app.datasource.host}/${app.datasource.name}?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: ${app.datasource.username}
+    password: ${app.datasource.password}
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    # 使用druid数据源
+    druid:
+      max-active: 20
+      initial-size: 1
+      max-wait: 60000
+      min-idle: 1
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x' FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: false
+      max-open-prepared-statements: 20
+      # encrypt password
+      filters: config,stat,wall,log4j
+      connection-properties: "config.decrypt=${app.datasource.druid.decypt};config.decrypt.key=${app.datasource.druid.public-key};druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000"
+      use-global-data-source-stat: true
+
+mybatis:
+  config-location : "classpath:mybatis-config.xml"
+  #checkConfig-location : false
+  mapper-locations : "classpath:mapper/*Mapper.xml"
