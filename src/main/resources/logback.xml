@@ -16,8 +16,8 @@
 		</encoder>
 	</appender>
 
-	<logger name="cn.vpclub.moses.user.provider.storage.mapper.UserMapper" level="DEBUG"/>
-	<logger name="tk.mybatis" level="debug" />
+	<logger name="cn.vpclub.spring.boot.demo.storage.mapper" level="DEBUG"/>
+	<logger name="tk.mybatis" level="DEBUG" />
 	<root level="INFO">
 		<appender-ref ref="console" />
 		<appender-ref ref="rollingFile" />

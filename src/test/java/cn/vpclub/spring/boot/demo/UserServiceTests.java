@@ -3,7 +3,7 @@ package cn.vpclub.spring.boot.demo;
 import cn.vpclub.spring.boot.demo.service.UserService;
 import cn.vpclub.spring.boot.demo.storage.domain.User;
 import cn.vpclub.spring.boot.demo.storage.mapper.UserMapper;
-import cn.vpclub.spring.boot.demo.service.UserServiceImp;
+import cn.vpclub.spring.boot.demo.service.UserServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,7 +34,7 @@ public class UserServiceTests {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        this.userService = new UserServiceImp(this.userMapper);
+        this.userService = new UserServiceImpl(this.userMapper);
     }
 
     @Test
