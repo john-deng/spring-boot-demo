@@ -48,7 +48,7 @@ public class UserServiceTests {
         user.setUsername(username);
         user.setPassword(password);
 
-        given(this.userMapper.selectByUsername(anyString()))
+        given(userMapper.selectByUsername(anyString()))
                 .willReturn(user);
 
         String result = userService.login(username, password);

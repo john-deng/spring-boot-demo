@@ -5,8 +5,6 @@ import cn.vpclub.spring.boot.demo.storage.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-
 /**
  * UserServiceImp
  * Created by johnd on 23/12/2016.
@@ -31,7 +29,7 @@ public class UserServiceImpl implements UserService {
             retVal = "用户 " + username + " 登录成功";
         }
 
-        log.info("{} is logging in {}, {}", username, retVal, Instant.now());
+        log.info("DEBUG: {} is logging in, {}", username, retVal);
 
         return retVal;
     }

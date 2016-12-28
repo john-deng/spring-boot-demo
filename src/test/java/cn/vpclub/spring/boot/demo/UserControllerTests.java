@@ -22,16 +22,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTests {
 
 	@Autowired
-	private MockMvc mvc;
+	private MockMvc mockMvc;
 
 	@MockBean
 	private UserService userService;
 
 	private void loginTestCase(String expected, String username, String password) throws Exception {
-		given(userService.login(username, password))
-			.willReturn(expected);
+		given(userService.login("johnd", "123456"))
+			.willReturn("登录成功");
 
-		mvc.perform(get("/login?username=" + username + "&password=" + password)
+		mockMvc.perform(get("/login?username=" + username + "&password=" + password)
 			.accept(MediaType.TEXT_PLAIN))
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString(expected)));
@@ -39,9 +39,25 @@ public class UserControllerTests {
 
 	@Test
 	public void testLogin() throws Exception {
-		loginTestCase("登录成功", "johnd", "1234567");
-		loginTestCase("用户名或密码错误", "johnd", "a;djfagj");
-		loginTestCase("用户名或密码错误", "dakjda", "123456");
+		given(userService.login("johnd", "123456"))
+				.willReturn("登录成功");
+
+		mockMvc.perform(get("/login?username=johnd&password=123456")
+				.accept(MediaType.TEXT_PLAIN))
+
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("登录成功")));
+	}
+	@Test
+	public void testLogin2() throws Exception {
+		given(userService.login("johnd", "dafdaf"))
+				.willReturn("用户名或密码错误");
+
+		mockMvc.perform(get("/login?username=johnd&password=dafdaf")
+				.accept(MediaType.TEXT_PLAIN))
+
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("用户名或密码错误")));
 	}
 
 }
