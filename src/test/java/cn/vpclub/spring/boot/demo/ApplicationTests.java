@@ -37,7 +37,7 @@ public class ApplicationTests {
 
 	private void loginTestCase(String expected, String username, String password) throws Exception {
 
-		log.info("\n\n{} {} {}", expected, username, password);
+		log.info("\n\n测试用例：{} 用户名：{} 密码：{}", expected, username, password);
 
 		mockMvc.perform(get("/login?username=" + username + "&password=" + password)
 			.accept(MediaType.TEXT_PLAIN))
