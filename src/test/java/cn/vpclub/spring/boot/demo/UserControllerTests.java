@@ -44,18 +44,17 @@ public class UserControllerTests {
 
 		mockMvc.perform(get("/login?username=johnd&password=123456")
 				.accept(MediaType.TEXT_PLAIN))
-
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("登录成功")));
 	}
+
 	@Test
-	public void testLogin2() throws Exception {
+	public void testLoginWithWrongPassword() throws Exception {
 		given(userService.login("johnd", "dafdaf"))
 				.willReturn("用户名或密码错误");
 
 		mockMvc.perform(get("/login?username=johnd&password=dafdaf")
 				.accept(MediaType.TEXT_PLAIN))
-
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("用户名或密码错误")));
 	}

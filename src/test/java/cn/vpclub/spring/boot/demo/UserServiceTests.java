@@ -52,7 +52,6 @@ public class UserServiceTests {
                 .willReturn(user);
 
         String result = userService.login(username, password);
-
         Assert.assertEquals(expected, result);
     }
 }
