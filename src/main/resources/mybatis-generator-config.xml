@@ -17,14 +17,14 @@
         <!-- !!!! Database Configurations !!!! -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://127.0.0.1:3306/spring_boot_demo"
-                        userId="root" password="Vpc1ub.dev"/>
+                        userId="root" password="password"/>
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
         <!-- !!!! Model Configurations !!!! -->
-        <javaModelGenerator targetPackage="cn.vpclub.spring.boot.pingan.demo.storage.domain"
+        <javaModelGenerator targetPackage="cn.vpclub.spring.boot.demo.storage.domain"
 
                             targetProject="THIS_CONFIGURATION_IS_NOT_REQUIRED">
             <property name="enableSubPackages" value="false"/>
@@ -37,7 +37,7 @@
         </sqlMapGenerator>
 
         <!-- !!!! Mapper Interface Configurations !!!! -->
-        <javaClientGenerator targetPackage="cn.vpclub.spring.boot.pingan.demo.storage.mapper"
+        <javaClientGenerator targetPackage="cn.vpclub.spring.boot.demo.storage.mapper"
                              targetProject="THIS_CONFIGURATION_IS_NOT_REQUIRED"
                              type="XMLMAPPER">
             <property name="enableSubPackages" value="false"/>
