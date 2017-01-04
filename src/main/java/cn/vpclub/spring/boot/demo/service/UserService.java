@@ -5,5 +5,6 @@ package cn.vpclub.spring.boot.demo.service;
  */
 
 public interface UserService {
+    public String signUp(UserInput userInput);
     public String login(String username, String password);
 }

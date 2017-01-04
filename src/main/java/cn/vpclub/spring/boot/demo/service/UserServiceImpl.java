@@ -20,6 +20,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String signUp(UserInput userInput) {
+        User user = new User();
+        user.setUsername(userInput.getUsername());
+        user.setPassword(userInput.getPassword());
+        int result = userMapper.insert(user);
+        String sResult = "用户 " + userInput.getUsername() + " 注册失败";
+        if (1 == result) {
+            sResult = "用户 " + userInput.getUsername() + " 注册成功";
+        }
+
+        log.info(sResult);
+
+        return sResult;
+    }
+
+    @Override
     public String login(String username, String password) {
         User user = userMapper.selectByUsername(username);
         String retVal = "用户名或密码错误";
