@@ -5,18 +5,14 @@ import cn.vpclub.spring.boot.demo.service.UserService;
 import cn.vpclub.spring.boot.demo.service.UserServiceImpl;
 import cn.vpclub.spring.boot.demo.storage.domain.User;
 import cn.vpclub.spring.boot.demo.storage.mapper.UserMapper;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.powermock.api.mockito.PowerMockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 /**
  * Created by johnd on 23/12/2016.
@@ -24,33 +20,48 @@ import static org.mockito.Matchers.anyString;
 @SpringBootTest
 public class UserServiceTests {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Mock
     private UserService userService;
-
-    @Mock
     private UserMapper userMapper;
+    private User testUser;
+    private UserInput userInput;
 
-    @Before
+    private String username = "johnd";
+    private String password = "123456";
+
+    @BeforeMethod
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-        this.userService = new UserServiceImpl(this.userMapper);
+        userMapper = PowerMockito.mock(UserMapper.class);
+        userService = new UserServiceImpl(this.userMapper);
+
+        testUser = new User();
+        testUser.setId(1L);
+        testUser.setUsername(username);
+        testUser.setPassword(password);
+
+        userInput = new UserInput();
+        userInput.setUsername(username);
+        userInput.setPassword(password);
     }
 
     @Test
     public void testSignUp() {
-        String username = "johnd";
-        String password = "123456";
         String expected = "用户 " + username + " 注册成功";
 
-        UserInput userInput = new UserInput();
-        userInput.setUsername(username);
-        userInput.setPassword(password);
+        when(userMapper.selectByUsername(username)).thenReturn(null);
 
-        given(userMapper.insert(any()))
-                .willReturn(1);
+        when(userMapper.insert(any())).thenReturn(1);
+
+        String result = userService.signUp(userInput);
+        Assert.assertEquals(expected, result);
+    }
+
+    @Test
+    public void testSignUpWhenUserExist() {
+        String expected = "用户 " + username + " 注册失败";
+
+        when(userMapper.selectByUsername(username)).thenReturn(testUser);
+
+        when(userMapper.insert(any())).thenReturn(0);
 
         String result = userService.signUp(userInput);
         Assert.assertEquals(expected, result);
@@ -58,17 +69,9 @@ public class UserServiceTests {
 
     @Test
     public void testLogin() {
-        String username = "johnd";
-        String password = "123456";
         String expected = "用户 " + username + " 登录成功";
 
-        User user = new User();
-        user.setId(1L);
-        user.setUsername(username);
-        user.setPassword(password);
-
-        given(userMapper.selectByUsername(anyString()))
-                .willReturn(user);
+        when(userMapper.selectByUsername(username)).thenReturn(testUser);
 
         String result = userService.login(username, password);
         Assert.assertEquals(expected, result);

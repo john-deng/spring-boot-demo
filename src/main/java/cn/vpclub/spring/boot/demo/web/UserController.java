@@ -21,7 +21,7 @@ public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(String username, String password) {
-        log.info("Entering login with password {}", username, password);
+        log.info("Entering login with username: {} password: {}", username, password);
         String result = userService.login(username, password);
         log.info("End of login with result: {}", result);
         return result;
