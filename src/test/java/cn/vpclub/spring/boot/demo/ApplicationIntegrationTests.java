@@ -44,9 +44,10 @@ public class ApplicationIntegrationTests extends AbstractTestNGSpringContextTest
         String expected = "用户名或密码错误";
 
         given().
-                contentType("text/plain; charset=UTF-8").
+                contentType("application/json; charset=UTF-8"). // may not necessary! just for demo only
                 param("username", "测试不存在的用户名").
                 param("password", "测试错误密码").
+                log().all().
         when().
                 post("/login").
         then().

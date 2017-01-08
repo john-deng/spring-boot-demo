@@ -1,23 +1,45 @@
 package cn.vpclub.spring.boot.demo.service;
 
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.concurrent.TimeUnit;
+
 /**
+ * AClassWithPrivateMethod
  * Created by johnd on 07/01/2017.
  */
+@Slf4j
 public class AClassWithPrivateMethod {
 
-    private String initString;
+    private final boolean noStatsAvailable = true;
 
-    private AClassWithPrivateMethod(String initString) {
-        this.initString = initString;
+    /**
+     * A public method
+     *
+     * @throws InterruptedException
+     */
+    public String calculateStats() throws InterruptedException {
+
+        if (noStatsAvailable) {
+            crunchNumbers();
+        }
+
+        return getStatsFromCache();
     }
 
-    private String echoString(String s) {
-        return "echo from a class with private method: " + s;
+    /**
+     * Calculate some statistic taking a long time.
+     */
+    private boolean crunchNumbers() throws InterruptedException {
+        log.info("start time consuming method");
+        TimeUnit.SECONDS.sleep(60);
+        log.info("end time consuming method");
+        return true;
     }
 
-    public String echoString() {
-        return "echo from a class with private constructor: " + initString;
+    private String getStatsFromCache() {
+        log.info("get stats from cache");
+        return "100%";
     }
-
-
 }
+

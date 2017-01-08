@@ -1,5 +1,6 @@
 package cn.vpclub.spring.boot.demo;
 
+import cn.vpclub.spring.boot.demo.service.AClassWithPrivateConstructor;
 import cn.vpclub.spring.boot.demo.service.AClassWithPrivateMethod;
 import cn.vpclub.spring.boot.demo.service.AFinalClass;
 import cn.vpclub.spring.boot.demo.service.AStaticClass;
@@ -8,25 +9,73 @@ import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.testng.Assert;
 import org.testng.IObjectFactory;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.ObjectFactory;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
 
 /**
  *
  * Created by johnd on 23/12/2016.
  */
-@PrepareForTest({AFinalClass.class, AStaticClass.class, AClassWithPrivateMethod.class})
+@PrepareForTest({
+        AFinalClass.class,
+        AStaticClass.class,
+        AClassWithPrivateMethod.class,
+        AClassWithPrivateConstructor.class
+})
 @SpringBootTest
 @Slf4j
 public class PowerMockitoUnitTests {
     private AFinalClass aFinalClass = null;
 
+    private AClassWithPrivateConstructor aClassWithPrivateConstructor;
+
+    private AClassWithPrivateMethod aClassWithPrivateMethod;
+
+    @BeforeMethod
+    public void setUp() {
+        // aClassWithPrivateMethod = new aClassWithPrivateMethod(); // wrong, constructor is private.
+        aClassWithPrivateConstructor = PowerMockito.mock(AClassWithPrivateConstructor.class); // with PowerMockito, you can do it.
+        aClassWithPrivateMethod = PowerMockito.spy(new AClassWithPrivateMethod()); // create Partial Mock
+    }
+
+
     @ObjectFactory
     public IObjectFactory getObjectFactory() {
         return new org.powermock.modules.testng.PowerMockObjectFactory();
     }
+
+    @Test
+    public void testClassWithPrivateConstructor() throws Exception {
+        String testInput = "A test input";
+        String mockedResult = "echo from a class with private constructor: " + testInput;
+
+        // mock invoke
+        PowerMockito.when(aClassWithPrivateConstructor.echoString(testInput)).thenReturn(mockedResult);
+
+        // verify
+        assertEquals(aClassWithPrivateConstructor.echoString(testInput), mockedResult);
+    }
+
+    @Test
+    public void testClassWithPrivateMethod() throws Exception {
+        final String methodToTest = "crunchNumbers";
+        final String expected = "100%";
+
+        // create a partial mock that can mock out one method */
+        PowerMockito.doReturn(true).when(aClassWithPrivateMethod, methodToTest);
+
+        final long startTime = System.currentTimeMillis();
+        String result = aClassWithPrivateMethod.calculateStats();
+        final long duration = System.currentTimeMillis() - startTime;
+
+        assertEquals(expected, result);
+        log.info("Time to run test: " + duration + "mS");
+    }
+
 
     @Test(dependsOnMethods = {"testStaticClass2"})
     public void testFinalClass1() {
@@ -37,7 +86,7 @@ public class PowerMockitoUnitTests {
         PowerMockito.when(aFinalClass.echoString(testInput)).thenReturn(mockedResult);
 
         // Assert the mocked result is returned from method call
-        Assert.assertEquals(aFinalClass.echoString(testInput), mockedResult);
+        assertEquals(aFinalClass.echoString(testInput), mockedResult);
 
         log.info("finished testFinalClass1()");
     }
@@ -48,7 +97,7 @@ public class PowerMockitoUnitTests {
         final String mockedResult = "echo from a final class: " + testInput;
 
         // Assert the mocked result is returned from method call
-        Assert.assertEquals(aFinalClass.echoString(testInput), mockedResult);
+        assertEquals(aFinalClass.echoString(testInput), mockedResult);
     }
 
     @Test
@@ -60,7 +109,7 @@ public class PowerMockitoUnitTests {
         Mockito.when(AStaticClass.echoString(testInput)).thenReturn(mockedResult);
 
         // Assert the mocked result is returned from method call
-        Assert.assertEquals(AStaticClass.echoString(testInput), mockedResult);
+        assertEquals(AStaticClass.echoString(testInput), mockedResult);
     }
 
     @Test(dependsOnMethods = {"testStaticClass1"})
@@ -69,6 +118,6 @@ public class PowerMockitoUnitTests {
         final String mockedResult = "echo from a static class: " + testInput;
 
         // Assert the mocked result is returned from method call
-        Assert.assertEquals(AStaticClass.echoString(testInput), mockedResult);
+        assertEquals(AStaticClass.echoString(testInput), mockedResult);
     }
 }
