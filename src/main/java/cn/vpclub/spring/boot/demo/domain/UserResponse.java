@@ -1,4 +1,4 @@
-package cn.vpclub.spring.boot.demo.service;
+package cn.vpclub.spring.boot.demo.domain;
 
 import lombok.Getter;
 import lombok.Setter;

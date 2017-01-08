@@ -2,6 +2,7 @@ package cn.vpclub.spring.boot.demo;
 
 import cn.vpclub.spring.boot.demo.service.UserService;
 import cn.vpclub.spring.boot.demo.web.UserController;
+import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.powermock.api.mockito.PowerMockito;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +10,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.Matchers.equalTo;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -31,10 +33,12 @@ public class UserControllerUnitTests {
                 thenReturn(expected);
 
         given().
+                contentType(ContentType.JSON.withCharset(UTF_8)).
                 param("username", "johnd").
                 param("password", "123456").
+                log().all().
         when().
-                get("/login").
+                post("/login").
         then().
                 statusCode(200).
                 body("message", equalTo(expected));
@@ -52,7 +56,7 @@ public class UserControllerUnitTests {
                 param("password", "testPassword").
                 log().all().
         when().
-                get("/login").
+                post("/login").
         then().
                 statusCode(200).
                 body("message", equalTo(expected));

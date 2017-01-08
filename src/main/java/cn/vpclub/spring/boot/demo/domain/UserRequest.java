@@ -1,4 +1,4 @@
-package cn.vpclub.spring.boot.demo.service;
+package cn.vpclub.spring.boot.demo.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class UserInput {
+public class UserRequest {
     private String username;
     private String password;
 }

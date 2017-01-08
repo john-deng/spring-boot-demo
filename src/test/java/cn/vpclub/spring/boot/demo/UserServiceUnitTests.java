@@ -1,6 +1,6 @@
 package cn.vpclub.spring.boot.demo;
 
-import cn.vpclub.spring.boot.demo.service.UserInput;
+import cn.vpclub.spring.boot.demo.domain.UserRequest;
 import cn.vpclub.spring.boot.demo.service.UserService;
 import cn.vpclub.spring.boot.demo.service.UserServiceImpl;
 import cn.vpclub.spring.boot.demo.storage.domain.User;
@@ -23,7 +23,7 @@ public class UserServiceUnitTests {
     private UserService userService;
     private UserMapper userMapper;
     private User testUser;
-    private UserInput userInput;
+    private UserRequest userInput;
 
     private String username = "johnd";
     private String password = "123456";
@@ -38,7 +38,7 @@ public class UserServiceUnitTests {
         testUser.setUsername(username);
         testUser.setPassword(password);
 
-        userInput = new UserInput();
+        userInput = new UserRequest();
         userInput.setUsername(username);
         userInput.setPassword(password);
     }

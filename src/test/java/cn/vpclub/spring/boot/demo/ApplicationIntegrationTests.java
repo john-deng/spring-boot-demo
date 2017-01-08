@@ -29,8 +29,9 @@ public class ApplicationIntegrationTests extends AbstractTestNGSpringContextTest
         given().
                 param("username", "johnd").
                 param("password", "123456").
+                log().all().
         when().
-                get("/login").
+                post("/login").
         then().
                 statusCode(200).
                 body("message", equalTo(expected));
@@ -45,7 +46,7 @@ public class ApplicationIntegrationTests extends AbstractTestNGSpringContextTest
                 param("username", "测试不存在的用户名").
                 param("password", "测试错误密码").
         when().
-                get("/login").
+                post("/login").
         then().
                 statusCode(200).
                 body("message", equalTo(expected));

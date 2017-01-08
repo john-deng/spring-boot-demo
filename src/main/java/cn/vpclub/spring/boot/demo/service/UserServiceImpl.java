@@ -1,5 +1,6 @@
 package cn.vpclub.spring.boot.demo.service;
 
+import cn.vpclub.spring.boot.demo.domain.UserRequest;
 import cn.vpclub.spring.boot.demo.storage.domain.User;
 import cn.vpclub.spring.boot.demo.storage.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String signUp(UserInput userInput) {
+    public String signUp(UserRequest userInput) {
         String sResult = "用户 " + userInput.getUsername() + " 注册失败";
 
         User user = userMapper.selectByUsername(userInput.getUsername());
