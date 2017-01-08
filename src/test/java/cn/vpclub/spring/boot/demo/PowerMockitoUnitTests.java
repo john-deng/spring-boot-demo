@@ -20,7 +20,7 @@ import org.testng.annotations.Test;
 @PrepareForTest({AFinalClass.class, AStaticClass.class, AClassWithPrivateMethod.class})
 @SpringBootTest
 @Slf4j
-public class PowerMockitoTests {
+public class PowerMockitoUnitTests {
     private AFinalClass aFinalClass = null;
 
     @ObjectFactory

@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @SpringBootTest
-public class UserControllerTests {
+public class UserControllerUnitTests {
 
     private UserService userService;
 
