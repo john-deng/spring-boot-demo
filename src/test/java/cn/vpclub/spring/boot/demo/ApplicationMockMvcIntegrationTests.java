@@ -56,8 +56,6 @@ public class ApplicationMockMvcIntegrationTests extends AbstractTestNGSpringCont
 		String username = "johnd";
 		String password = "123456";
 
-		log.info("\n\n测试用例：{} 用户名：{} 密码：{}", expected, username, password);
-
 		String uri = "/login";
 		Map<String, Object> map = new HashMap<>();
 		map.put("userName",username);
@@ -79,8 +77,6 @@ public class ApplicationMockMvcIntegrationTests extends AbstractTestNGSpringCont
 		String expected = "用户名或密码错误";
 		String username = "测试错误用户名";
 		String password = "测试错误密码";
-
-		log.info("\n\n测试用例：{} 用户名：{} 密码：{}", expected, username, password);
 
 		String uri = "/login";
 		Map<String, Object> map = new HashMap<>();

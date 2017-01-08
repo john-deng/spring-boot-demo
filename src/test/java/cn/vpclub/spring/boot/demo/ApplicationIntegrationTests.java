@@ -1,6 +1,7 @@
 package cn.vpclub.spring.boot.demo;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -12,6 +13,7 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest
+@Slf4j
 public class ApplicationIntegrationTests extends AbstractTestNGSpringContextTests {
 
     @Autowired
