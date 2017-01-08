@@ -9,7 +9,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
-import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest
 public class ApplicationIntegrationTests extends AbstractTestNGSpringContextTests {
@@ -29,12 +29,11 @@ public class ApplicationIntegrationTests extends AbstractTestNGSpringContextTest
         given().
                 param("username", "johnd").
                 param("password", "123456").
-                log().all().
         when().
                 get("/login").
         then().
                 statusCode(200).
-                body(containsString(expected));
+                body("message", equalTo(expected));
     }
 
     @Test
@@ -45,12 +44,11 @@ public class ApplicationIntegrationTests extends AbstractTestNGSpringContextTest
                 contentType("text/plain; charset=UTF-8").
                 param("username", "测试不存在的用户名").
                 param("password", "测试错误密码").
-                log().all().
         when().
                 get("/login").
         then().
                 statusCode(200).
-                body(containsString(expected));
+                body("message", equalTo(expected));
     }
 
 }

@@ -42,7 +42,7 @@ public class ApplicationMockMvcIntegrationTests extends AbstractTestNGSpringCont
 		log.info("\n\n测试用例：{} 用户名：{} 密码：{}", expected, username, password);
 
 		mockMvc.perform(get("/login?username=" + username + "&password=" + password)
-			.accept(MediaType.TEXT_PLAIN))
+			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString(expected)));
 	}
@@ -57,7 +57,7 @@ public class ApplicationMockMvcIntegrationTests extends AbstractTestNGSpringCont
 		log.info("\n\n测试用例：{} 用户名：{} 密码：{}", expected, username, password);
 
 		mockMvc.perform(get("/login?username=" + username + "&password=" + password)
-			.accept(MediaType.TEXT_PLAIN))
+			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString(expected)));
 	}
