@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
@@ -24,13 +25,12 @@ public class ApplicationIntegrationTests extends AbstractTestNGSpringContextTest
         RestAssuredMockMvc.webAppContextSetup(context);
     }
 
-    @Test(dependsOnMethods = "testLoginWithWrongPassword")
-    public void testLogin() throws Exception {
-        String expected = "用户 johnd 登录成功";
+    @Test(dataProvider = "login-test-cases")
+    public void testLogin(String expected, String username, String password) throws Exception {
 
         given().
-                param("username", "johnd").
-                param("password", "123456").
+                param("username", username).
+                param("password", password).
                 log().all().
         when().
                 post("/login").
@@ -39,20 +39,12 @@ public class ApplicationIntegrationTests extends AbstractTestNGSpringContextTest
                 body("message", equalTo(expected));
     }
 
-    @Test
-    public void testLoginWithWrongPassword() throws Exception {
-        String expected = "用户名或密码错误";
-
-        given().
-                contentType("application/json; charset=UTF-8"). // may not necessary! just for demo only
-                param("username", "测试不存在的用户名").
-                param("password", "测试错误密码").
-                log().all().
-        when().
-                post("/login").
-        then().
-                statusCode(200).
-                body("message", equalTo(expected));
+    @DataProvider(name = "login-test-cases")
+    public Object[][] loginData() {
+        return new Object[][] {
+                {"用户 johnd 登录成功", "johnd", "123456"},
+                {"用户名或密码错误", "johnd", "错误的密码"},
+                {"用户名或密码错误", "测试不存在的用户名", "123456"},
+        };
     }
-
 }
