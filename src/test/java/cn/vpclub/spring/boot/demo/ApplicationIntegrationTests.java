@@ -1,5 +1,7 @@
 package cn.vpclub.spring.boot.demo;
 
+import cn.vpclub.spring.boot.demo.domain.UserRequest;
+import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +30,19 @@ public class ApplicationIntegrationTests extends AbstractTestNGSpringContextTest
     @Test(dataProvider = "login-test-cases")
     public void testLogin(String expected, String username, String password) throws Exception {
 
+        UserRequest userRequest = new UserRequest();
+        userRequest.setUsername(username);
+        userRequest.setPassword(password);
+
         given().
-                param("username", username).
-                param("password", password).
+                contentType(ContentType.JSON).
+                body(userRequest).
                 log().all().
         when().
                 post("/login").
         then().
                 statusCode(200).
+                contentType(ContentType.JSON).
                 body("message", equalTo(expected));
     }
 
