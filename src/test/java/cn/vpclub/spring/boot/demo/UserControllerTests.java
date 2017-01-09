@@ -34,9 +34,9 @@ public class UserControllerTests {
                 param("username", username).
                 param("password", password).
                 log().all().
-                when().
+        when().
                 post("/login").
-                then().
+        then().
                 statusCode(200).
                 body("message", equalTo(expected));
     }
