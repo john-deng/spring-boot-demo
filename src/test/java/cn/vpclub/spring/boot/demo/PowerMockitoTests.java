@@ -14,6 +14,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.ObjectFactory;
 import org.testng.annotations.Test;
 
+import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 import static org.testng.Assert.assertEquals;
 
 /**
@@ -72,6 +73,8 @@ public class PowerMockitoTests {
         String result = aClassWithPrivateMethod.calculateStats();
         final long duration = System.currentTimeMillis() - startTime;
 
+        verifyPrivate(aClassWithPrivateMethod).invoke(methodToTest);
+
         assertEquals(expected, result);
         log.info("Time to run test: " + duration + "mS");
     }
@@ -110,6 +113,9 @@ public class PowerMockitoTests {
 
         // Assert the mocked result is returned from method call
         assertEquals(AStaticClass.echoString(testInput), mockedResult);
+
+        PowerMockito.verifyStatic();
+        AStaticClass.echoString(testInput);
     }
 
     @Test(dependsOnMethods = {"testStaticClass1"})

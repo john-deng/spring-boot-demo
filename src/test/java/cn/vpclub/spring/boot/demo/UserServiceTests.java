@@ -5,6 +5,7 @@ import cn.vpclub.spring.boot.demo.service.UserService;
 import cn.vpclub.spring.boot.demo.service.UserServiceImpl;
 import cn.vpclub.spring.boot.demo.storage.domain.User;
 import cn.vpclub.spring.boot.demo.storage.mapper.UserMapper;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testng.Assert;
@@ -12,6 +13,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 /**
@@ -74,6 +76,12 @@ public class UserServiceTests {
         when(userMapper.selectByUsername(username)).thenReturn(testUser);
 
         String result = userService.login(username, password);
+
+        //Verifying that userService did call the
+        //selectByUsername method on the mocked service
+        //instance userMapper.
+        Mockito.verify(userMapper).selectByUsername(username);
+        Mockito.verify(userMapper, times(1)).selectByUsername(username);
 
         Assert.assertEquals(result, expected);
     }

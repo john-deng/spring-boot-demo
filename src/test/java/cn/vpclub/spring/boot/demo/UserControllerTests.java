@@ -51,7 +51,6 @@ public class UserControllerTests {
 
         when(userService.login("testUser", "testPassword"))
                 .thenReturn(expected);
-
         given().
                 param("username", "testUser").
                 param("password", "testPassword").
