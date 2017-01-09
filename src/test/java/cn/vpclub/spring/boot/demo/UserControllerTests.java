@@ -36,6 +36,7 @@ public class UserControllerTests {
                 contentType(ContentType.JSON.withCharset(UTF_8)).
                 param("username", "johnd").
                 param("password", "123456").
+
                 log().all().
         when().
                 post("/login").

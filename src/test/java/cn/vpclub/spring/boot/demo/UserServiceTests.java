@@ -74,6 +74,7 @@ public class UserServiceTests {
         when(userMapper.selectByUsername(username)).thenReturn(testUser);
 
         String result = userService.login(username, password);
-        Assert.assertEquals(expected, result);
+
+        Assert.assertEquals(result, expected);
     }
 }

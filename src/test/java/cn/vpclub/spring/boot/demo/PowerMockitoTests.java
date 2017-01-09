@@ -37,7 +37,7 @@ public class PowerMockitoTests {
 
     @BeforeMethod
     public void setUp() {
-        // aClassWithPrivateMethod = new aClassWithPrivateMethod(); // wrong, constructor is private.
+        // aClassWithPrivateMethod = new AClassWithPrivateConstructor(); // wrong, constructor is private.
         aClassWithPrivateConstructor = PowerMockito.mock(AClassWithPrivateConstructor.class); // with PowerMockito, you can do it.
         aClassWithPrivateMethod = PowerMockito.spy(new AClassWithPrivateMethod()); // create Partial Mock
     }
