@@ -1,7 +1,9 @@
 package cn.vpclub.spring.boot.demo;
 
+import cn.vpclub.spring.boot.demo.domain.UserRequest;
 import cn.vpclub.spring.boot.demo.service.UserService;
 import cn.vpclub.spring.boot.demo.web.UserController;
+import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.powermock.api.mockito.PowerMockito;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,17 +29,21 @@ public class UserControllerTests {
     @Test(dataProvider = "login-test-cases")
     public void testLogin(String expected, String username, String password) throws Exception {
 
+        UserRequest userRequest = new UserRequest();
+        userRequest.setUsername(username);
+        userRequest.setPassword(password);
+
         when(userService.login(username, password)).
                 thenReturn(expected);
-
         given().
-                param("username", username).
-                param("password", password).
+                contentType(ContentType.JSON).
+                body(userRequest).
                 log().all().
         when().
                 post("/login").
         then().
                 statusCode(200).
+                contentType(ContentType.JSON).
                 body("message", equalTo(expected));
     }
 
@@ -49,5 +55,4 @@ public class UserControllerTests {
                 {"用户名或密码错误", "测试不存在的用户名", "123456"},
         };
     }
-
 }
