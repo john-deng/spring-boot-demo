@@ -4,9 +4,7 @@ import cn.vpclub.spring.boot.demo.domain.UserRequest;
 import cn.vpclub.spring.boot.demo.domain.UserResponse;
 import cn.vpclub.spring.boot.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * UserController
@@ -23,7 +21,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public UserResponse login(UserRequest userRequest) {
+    @ResponseBody
+    public UserResponse login(@RequestBody UserRequest userRequest) {
         log.info("Entering login with username: {} password: {}", userRequest.getUsername(), userRequest.getPassword());
         String result = userService.login(userRequest.getUsername(), userRequest.getPassword());
 
