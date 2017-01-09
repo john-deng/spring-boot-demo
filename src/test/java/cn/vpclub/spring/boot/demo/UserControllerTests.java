@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @SpringBootTest
-public class UserControllerUnitTests {
+public class UserControllerTests {
 
     private UserService userService;
 

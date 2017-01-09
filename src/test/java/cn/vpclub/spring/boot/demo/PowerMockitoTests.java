@@ -28,7 +28,7 @@ import static org.testng.Assert.assertEquals;
 })
 @SpringBootTest
 @Slf4j
-public class PowerMockitoUnitTests {
+public class PowerMockitoTests {
     private AFinalClass aFinalClass = null;
 
     private AClassWithPrivateConstructor aClassWithPrivateConstructor;

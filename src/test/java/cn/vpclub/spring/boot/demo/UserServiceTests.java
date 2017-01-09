@@ -18,7 +18,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  * Created by johnd on 23/12/2016.
  */
 @SpringBootTest
-public class UserServiceUnitTests {
+public class UserServiceTests {
 
     private UserService userService;
     private UserMapper userMapper;
