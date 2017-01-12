@@ -1,20 +1,20 @@
 package cn.vpclub.spring.boot.demo;
 
-import cn.vpclub.spring.boot.demo.service.AClassWithPrivateConstructor;
-import cn.vpclub.spring.boot.demo.service.AClassWithPrivateMethod;
-import cn.vpclub.spring.boot.demo.service.AFinalClass;
-import cn.vpclub.spring.boot.demo.service.AStaticClass;
+import cn.vpclub.spring.boot.demo.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.testng.Assert;
 import org.testng.IObjectFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.ObjectFactory;
 import org.testng.annotations.Test;
 
+import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
+import static org.powermock.api.mockito.PowerMockito.when;
 import static org.testng.Assert.assertEquals;
 
 /**
@@ -43,10 +43,19 @@ public class PowerMockitoTests {
         aClassWithPrivateMethod = PowerMockito.spy(new AClassWithPrivateMethod()); // create Partial Mock
     }
 
-
     @ObjectFactory
     public IObjectFactory getObjectFactory() {
         return new org.powermock.modules.testng.PowerMockObjectFactory();
+    }
+
+    @Test
+    public void testGenericType() {
+        String expected = "mock Generic Type";
+        @SuppressWarnings("unchecked") // Safe for a mock
+        Foo<Bar> fooBar = (Foo<Bar>)PowerMockito.mock(Foo.class);
+        when(fooBar.get()).thenReturn(new Bar(expected));
+        log.info(fooBar.get().getBar());
+        Assert.assertEquals(expected, fooBar.get().getBar());
     }
 
     @Test
@@ -55,19 +64,19 @@ public class PowerMockitoTests {
         String mockedResult = "echo from a class with private constructor: " + testInput;
 
         // mock invoke
-        PowerMockito.when(aClassWithPrivateConstructor.echoString(testInput)).thenReturn(mockedResult);
+        when(aClassWithPrivateConstructor.echoString(testInput)).thenReturn(mockedResult);
 
         // verify
         assertEquals(aClassWithPrivateConstructor.echoString(testInput), mockedResult);
     }
 
-    @Test
+    @Test()
     public void testClassWithPrivateMethod() throws Exception {
         final String methodToTest = "crunchNumbers";
         final String expected = "100%";
 
         // create a partial mock that can mock out one method */
-        PowerMockito.doReturn(true).when(aClassWithPrivateMethod, methodToTest);
+        doReturn(true).when(aClassWithPrivateMethod, methodToTest);
 
         final long startTime = System.currentTimeMillis();
         String result = aClassWithPrivateMethod.calculateStats();
@@ -86,7 +95,7 @@ public class PowerMockitoTests {
         final String mockedResult = "echo from a final class: " + testInput;
 
         aFinalClass = PowerMockito.mock(AFinalClass.class);
-        PowerMockito.when(aFinalClass.echoString(testInput)).thenReturn(mockedResult);
+        when(aFinalClass.echoString(testInput)).thenReturn(mockedResult);
 
         // Assert the mocked result is returned from method call
         assertEquals(aFinalClass.echoString(testInput), mockedResult);

@@ -33,8 +33,8 @@ public class UserControllerTests {
         userRequest.setUsername(username);
         userRequest.setPassword(password);
 
-        when(userService.login(username, password)).
-                thenReturn(expected);
+        when(userService.login(username, password)).thenReturn(expected);
+
         given().
                 contentType(ContentType.JSON).
                 body(userRequest).
