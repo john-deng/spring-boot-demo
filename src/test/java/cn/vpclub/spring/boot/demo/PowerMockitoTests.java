@@ -2,8 +2,6 @@ package cn.vpclub.spring.boot.demo;
 
 import cn.vpclub.spring.boot.demo.service.*;
 import lombok.extern.slf4j.Slf4j;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testng.Assert;
@@ -12,9 +10,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.ObjectFactory;
 import org.testng.annotations.Test;
 
-import static org.powermock.api.mockito.PowerMockito.doReturn;
-import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.powermock.api.mockito.PowerMockito.*;
 import static org.testng.Assert.assertEquals;
 
 /**
@@ -39,8 +35,8 @@ public class PowerMockitoTests {
     @BeforeMethod
     public void setUp() {
         // aClassWithPrivateMethod = new AClassWithPrivateConstructor(); // wrong, constructor is private.
-        aClassWithPrivateConstructor = PowerMockito.mock(AClassWithPrivateConstructor.class); // with PowerMockito, you can do it.
-        aClassWithPrivateMethod = PowerMockito.spy(new AClassWithPrivateMethod()); // create Partial Mock
+        aClassWithPrivateConstructor = mock(AClassWithPrivateConstructor.class); // with PowerMockito, you can do it.
+        aClassWithPrivateMethod = spy(new AClassWithPrivateMethod()); // create Partial Mock
     }
 
     @ObjectFactory
@@ -52,7 +48,7 @@ public class PowerMockitoTests {
     public void testGenericType() {
         String expected = "mock Generic Type";
         @SuppressWarnings("unchecked") // Safe for a mock
-        Foo<Bar> fooBar = (Foo<Bar>)PowerMockito.mock(Foo.class);
+        Foo<Bar> fooBar = (Foo<Bar>)mock(Foo.class);
         when(fooBar.get()).thenReturn(new Bar(expected));
         log.info(fooBar.get().getBar());
         Assert.assertEquals(expected, fooBar.get().getBar());
@@ -94,7 +90,7 @@ public class PowerMockitoTests {
         final String testInput = "A test input";
         final String mockedResult = "echo from a final class: " + testInput;
 
-        aFinalClass = PowerMockito.mock(AFinalClass.class);
+        aFinalClass = mock(AFinalClass.class);
         when(aFinalClass.echoString(testInput)).thenReturn(mockedResult);
 
         // Assert the mocked result is returned from method call
@@ -114,16 +110,16 @@ public class PowerMockitoTests {
 
     @Test
     public void testStaticClass1() {
-        PowerMockito.mockStatic(AStaticClass.class);
+        mockStatic(AStaticClass.class);
 
         final String testInput = "A test input";
         final String mockedResult = "echo from a static class: " + testInput;
-        Mockito.when(AStaticClass.echoString(testInput)).thenReturn(mockedResult);
+        when(AStaticClass.echoString(testInput)).thenReturn(mockedResult);
 
         // Assert the mocked result is returned from method call
         assertEquals(AStaticClass.echoString(testInput), mockedResult);
 
-        PowerMockito.verifyStatic();
+        verifyStatic();
         AStaticClass.echoString(testInput);
     }
 
